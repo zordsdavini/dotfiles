@@ -1,15 +1,25 @@
 *
+
 !.gitignore
 
 !.Xresources
+!.config
+!.config/composer
 !.config/composer/composer.json
+!.config/dunst
 !.config/dunst/dunstrc
+!.config/mutt
 !.config/mutt/muttrc
 !.config/mutt/accounts/1-zordsdavini.muttrc
 !.config/mutt/accounts/2-gmail.muttrc
+!.config/nvim
 !.config/nvim/init.vim
+!.config/qtile
 !.config/qtile/config.py
+!.git_template
+!.git_template/hooks
 !.git_template/hooks/ctags
+!.moc
 !.moc/config
 !.tmux.conf
 !.xinitrc

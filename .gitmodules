@@ -1,0 +1,3 @@
+[submodule ".config/qtile"]
+	path = .config/qtile
+	url = git@github.com:zordsdavini/qtile-config.git
