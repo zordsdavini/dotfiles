@@ -94,7 +94,7 @@ set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set mouse=a
 
-let &titlestring = "[ViM] " . fnamemodify(v:this_session, ':t') . " " . @%
+autocmd BufEnter * let &titlestring = "[ViM] " . fnamemodify(v:this_session, ':t') . " " . @%
 set title
 
 syntax on
