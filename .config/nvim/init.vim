@@ -119,10 +119,14 @@ nnoremap  <leader>s :source $MYVIMRC<CR>
 nnoremap  <leader>e :e $MYVIMRC<CR>
 
 " move in tabs
-nnoremap <A-j> :tabprev<CR>
-nnoremap <A-k> :tabnext<CR>
+nnoremap <A-h> :tabprev<CR>
+nnoremap <A-l> :tabnext<CR>
 nnoremap <A-Left> :tabprev<CR>
 nnoremap <A-Right> :tabnext<CR>
+
+" move in tab betwwen buffers
+nnoremap <A-j> <C-w>h
+nnoremap <A-k> <C-w>l
 
 " Force saving files that require root permission
 cnoremap w!! w !sudo tee > /dev/null %
@@ -283,6 +287,9 @@ noremap <leader><leader>u :w \| startinsert \| term urlview %<cr>
       \     'linter_ok': 'left',
       \     'gitbranch': 'error',
       \ }
+    let g:lightline.tab = {
+        \ 'active': [ 'tabnum', 'filename', 'modified' ],
+        \ 'inactive': [ 'tabnum', 'filename', 'modified' ] }
 " }
 
 " ALE {
@@ -305,6 +312,7 @@ noremap <leader><leader>u :w \| startinsert \| term urlview %<cr>
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],
     \   'javascript': ['eslint'],
     \   'php': ['phpcbf', 'php_cs_fixer'],
+    \   'python': ['isort'],
     \}
 
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)

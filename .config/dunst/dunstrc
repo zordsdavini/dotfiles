@@ -66,7 +66,7 @@
 
     ### Text ###
 
-    font = Hack 10
+    font = Hack Nerd Font 10
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -254,20 +254,20 @@
 
 [urgency_low]
     background = "#15181a"
-    foreground = "#ffffff"
-    timeout = 10
+    foreground = "#afaf00"
+    timeout = 5
 
 [urgency_normal]
     background = "#83adad"
     foreground = "#262626"
-    timeout = 10
+    timeout = 5
 
 [urgency_critical]
     background = "#d75f5f"
     foreground = "#262626"
-    timeout = 10
+    timeout = 5
 
-# Every section that isn't one of the above is interpreted as a rules to
+# RULES
 # override settings for certain messages.
 #
 # Messages can be matched by
@@ -292,31 +292,30 @@
 #    set_transient
 #    timeout
 #    urgency
-#
-# Shell-like globbing will get expanded.
-#
-# Instead of the appname filter, it's recommended to use the desktop_entry filter.
-# GLib based applications export their desktop-entry name. In comparison to the appname,
-# the desktop-entry won't get localized.
-#
-# SCRIPTING
-# You can specify a script that gets run when the rule matches by
-# setting the "script" option.
-# The script will be called as follows:
-#   script appname summary body icon urgency
-# where urgency can be "LOW", "NORMAL" or "CRITICAL".
-#
-# NOTE: if you don't want a notification to be displayed, set the format
-# to "".
-# NOTE: It might be helpful to run dunst -print in a terminal in order
-# to find fitting options for rules.
 
-# Disable the transient hint so that idle_threshold cannot be bypassed from the
-# client
-#[transient_disable]
-#    match_transient = yes
-#    set_transient = no
-#
+[irssi]
+    appname = Irssi
+    urgency = low
+    background = "#15181a"
+    foreground = "#afaf00"
+
+[signed_on]
+    appname = Irssi
+    summary = *has joined*
+    format = ""
+
+[signed_off]
+    appname = Irssi
+    summary = *has quit*
+    format = ""
+
+[says]
+    appname = Irssi
+    summary = *zordsdavini*
+    urgency = critical
+    background = "#d75f5f"
+    foreground = "#262626"
+
 # Make the handling of transient notifications more strict by making them not
 # be placed in history.
 #[transient_history_ignore]

@@ -103,9 +103,12 @@ alias qtile_restart="qtile-cmd -o cmd -f restant"
 alias ww="watson"
 alias wws="watson stop"
 alias wwr="watson restart"
+alias newst="st >/dev/null 2>&1 & disown"
 
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
+
+bindkey -s "^N" "newst\n"
 
 ### FZF ###
 

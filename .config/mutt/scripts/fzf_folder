@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+fzf_command='fzf'
+fd_command="ls -1 ${HOME}/.local/share/mail/$1"
+
+folder="$($fd_command | $fzf_command)"
+
+echo "push 'c=$folder<enter>'"
