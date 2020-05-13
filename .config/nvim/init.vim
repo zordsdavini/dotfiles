@@ -24,11 +24,12 @@ Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
 Plug 'godlygeek/tabular'
 
-Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
+Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install --no-dev -o'}
 Plug 'StanAngeloff/php.vim'
 Plug 'zordsdavini/vim-symfony-helper'
 Plug 'lumiliet/vim-twig'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'posva/vim-vue'
 
 Plug 'dense-analysis/ale'
 Plug 'maximbaz/lightline-ale'
@@ -87,6 +88,7 @@ set termguicolors              " Enable true-color support
 set history=1000
 set undolevels=1000
 set noswapfile
+set smartcase
 
 autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
@@ -105,6 +107,8 @@ set wildmode=longest,full       " Set full autocompletion
 " Enable persistent undo
 set undodir=~/.vimundo/
 set undofile
+
+set tags+=./tags,~/tags
 
 colorscheme gruvbox
 
@@ -178,7 +182,7 @@ noremap <leader><leader>u :w \| startinsert \| term urlview %<cr>
 
 " PHPACTOR {
     let g:phpactorPhpBin = 'php'
-    let g:phpactorBranch = 'develop'
+    let g:phpactorBranch = 'master'
     let g:phpactorOmniAutoClassImport = v:true
     let g:phpactorInputListStrategy = 'phpactor#input#list#fzf'
 
@@ -307,6 +311,7 @@ noremap <leader><leader>u :w \| startinsert \| term urlview %<cr>
     \   'php': ['php', 'phpcs', 'phpstan'],
     \   'python': ['flake8'],
     \   'go': ['gofmt'],
+    \   'javascript': ['eslint'],
     \}
     let g:ale_fixers = {
     \   '*': ['remove_trailing_lines', 'trim_whitespace'],

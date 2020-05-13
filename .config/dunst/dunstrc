@@ -316,6 +316,12 @@
     background = "#d75f5f"
     foreground = "#262626"
 
+[nextcloud]
+    appname = Nextcloud
+    urgency = low
+    background = "#15181a"
+    foreground = "#afaf00"
+
 # Make the handling of transient notifications more strict by making them not
 # be placed in history.
 #[transient_history_ignore]
