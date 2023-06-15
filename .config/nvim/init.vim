@@ -1,8 +1,7 @@
-" ViM config by <zordsdavini@gmail.com>, 2020
+""" NeoVim config by <zordsdavini@arns.lt>, 2023 (30.34)
+" a lot of taken from Optixal
 
-""""""""""
-"  INIT  "
-""""""""""
+""" Vim-Plug
 
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
@@ -10,108 +9,145 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"""""""""""""
-"  PLUGINS  "
-"""""""""""""
 
 call plug#begin()
 
-Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'easymotion/vim-easymotion'
-Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-startify'
-Plug 'godlygeek/tabular'
+" Core
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'romgrk/barbar.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'phaazon/hop.nvim'
 
-Plug 'phpactor/phpactor', {'for': 'php', 'do': 'composer install --no-dev -o'}
-Plug 'StanAngeloff/php.vim'
-Plug 'zordsdavini/vim-symfony-helper'
-Plug 'lumiliet/vim-twig'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'posva/vim-vue'
-
-Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make' }
-Plug 'kristijanhusak/deoplete-phpactor'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-abolish'
-Plug 'djoshea/vim-autoread'
-Plug 'andymass/vim-matchup'
-Plug 'kkoomen/vim-doge'
-
-Plug 'airblade/vim-gitgutter'
+" Functionalities
 Plug 'tpope/vim-fugitive'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'kshenoy/vim-signature'
-Plug 'mbbill/undotree'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-signify'
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+Plug 'tpope/vim-abolish'
+Plug 'junegunn/vim-easy-align'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Yggdroot/indentLine'
+Plug 'chrisbra/Colorizer'
+Plug 'KabbAmine/vCoolor.vim'
+Plug 'dkarter/bullets.vim'
+Plug 'wellle/context.vim'
+Plug 'antoinemadec/FixCursorHold.nvim'
 
-Plug 'itchyny/lightline.vim'
-Plug 'ap/vim-css-color'
+" PHP
+
+" Aesthetics
 Plug 'morhetz/gruvbox'
-Plug 'luochen1990/rainbow'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/limelight.vim'
 
 call plug#end()
 
-" TODO
-" autocmd FileType c          nnoremap <buffer> <C-]> :YcmCompleter GoTo<CR>
-" autocmd FileType javascript nnoremap <buffer> <C-]> :TernDef<CR>
 
-"""""""""""""
-"  GENERAL  "
-"""""""""""""
-
-let mapleader='\'
-
-set autoindent
-set smartindent
-set expandtab
-set smarttab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+""" Main Configurations
+filetype plugin indent on
+set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
+set incsearch ignorecase smartcase hlsearch
+set wildmode=longest,list,full wildmenu
+set ruler laststatus=2 showcmd showmode
+set list listchars=trail:»,tab:»-
+set fillchars+=vert:\ 
+set wrap breakindent
+set encoding=utf-8
 set textwidth=130
-set updatetime=100
-set signcolumn=yes
-set colorcolumn=80,130
-set termguicolors              " Enable true-color support
-set history=1000
-set undolevels=1000
 set noswapfile
-set smartcase
-
-autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-
-set number                     " Show current line number
-set relativenumber             " Show relative line numbers
-set mouse=a
+set mouse+=a
+set hidden
+set number
+" set relativenumber             " Show relative line numbers
 
 autocmd BufEnter * let &titlestring = "[ViM] " . fnamemodify(v:this_session, ':t') . " " . @%
 set title
 
+
+""" Coloring
+set colorcolumn=80,130
+colorscheme gruvbox
+set termguicolors
+
 syntax on
 
-set wildmenu                    " Show the nice autocomplete menu
-set wildmode=longest,full       " Set full autocompletion
 
-" Enable persistent undo
-set undodir=~/.vimundo/
-set undofile
 
-set tags+=./tags,~/tags
+""" Filetype-Specific Configurations
+autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
+autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
+autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
+autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype json setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-colorscheme gruvbox
 
+""" Core plugin configuration (vim)
+
+" auto-pairs
+let g:AutoPairsShortcutToggle = ''
+
+" nvim-cmp
+set completeopt=menu,menuone,noselect
+
+" signify
+let g:signify_sign_add = '│'
+let g:signify_sign_delete = '│'
+let g:signify_sign_change = '│'
+hi DiffDelete guifg=#ff5555 guibg=none
+
+" indentLine
+let g:indentLine_char = '▏'
+let g:indentLine_defaultGroup = 'NonText'
+" Disable indentLine from concealing json and markdown syntax (e.g. ```)
+let g:vim_json_syntax_conceal = 0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+
+" FixCursorHold for better performance
+let g:cursorhold_updatetime = 100
+
+" context.vim
+let g:context_nvim_no_redraw = 1
+
+" rainbow_parentheses
+let g:rainbow_active = 1
+
+" barbar
+let bufferline = get(g:, 'bufferline', {})
+let bufferline.animation = v:false
+let bufferline.icon_pinned = '📌'
+
+
+""" Custom Mappings (vim) (lua custom mappings are within individual lua config files)
+
+" Core
+
+let mapleader='\'
+
+cnoreabbrev wq w<bar>bd
+cnoreabbrev q bd
 
 " Clipboard functionality (paste from system)
 vnoremap  <leader>y "+y
@@ -122,240 +158,51 @@ vnoremap <leader>p "+p
 nnoremap  <leader>s :source $MYVIMRC<CR>
 nnoremap  <leader>e :e $MYVIMRC<CR>
 
-" move in tabs
-nnoremap <A-h> :tabprev<CR>
-nnoremap <A-l> :tabnext<CR>
-nnoremap <A-Left> :tabprev<CR>
-nnoremap <A-Right> :tabnext<CR>
+nmap <A-1> :NvimTreeToggle<CR>
+map <leader>r :NvimTreeFindFile<cr>
 
-" move in tab betwwen buffers
-nnoremap <A-j> <C-w>h
-nnoremap <A-k> <C-w>l
+nmap <leader>l :Limelight!!<CR>
+xmap <leader>l :Limelight!!<CR>
 
-" Force saving files that require root permission
-cnoremap w!! w !sudo tee > /dev/null %
+nnoremap gcc <Plug>NERDCommenterToggle
+vnoremap gcc <Plug>NERDCommenterToggle
 
-" disable Ex mode
-map Q <Nop>
+" hop motion
+map <leader>\w <cmd>HopWord<cr>
+omap <leader>\w <cmd>HopWord<cr>
+map <leader>\b <cmd>HopWordBC<cr>
+omap <leader>\b <cmd>HopWordBC<cr>
+map <leader>\j <cmd>HopLineStart<cr>
+omap <leader>\j <cmd>HopLineStart<cr>
+map <leader>\/ <cmd>HopPattern<cr>
+omap <leader>\/ <cmd>HopPattern<cr>
 
-command! Q tabclose
-command! Bd %bd|e#
+" barbar
+nnoremap <silent> <A-Left> <Cmd>BufferPrevious<CR>
+nnoremap <silent> <A-Right> <Cmd>BufferNext<CR>
+nnoremap <silent> <A-<> <Cmd>BufferMovePrevious<CR>
+nnoremap <silent> <A->> <Cmd>BufferMoveNext<CR>
+nnoremap <silent> <A-p> <Cmd>BufferPick<CR>
+nnoremap <silent> <C-p> <Cmd>BufferPin<CR>
 
-" url open
-noremap <leader><leader>u :w \| startinsert \| term urlview %<cr>
+" Telescope mappings
+nnoremap <leader>\ <cmd>Telescope find_files<cr>
+nnoremap <leader>] <cmd>Telescope git_files<cr>
+nnoremap <leader>[ <cmd>Telescope git_status<cr>
+nnoremap <C-f> <cmd>Telescope live_grep<cr>
+nnoremap <leader>] <cmd>Telescope buffers<cr>
+nnoremap <F1> <cmd>Telescope help_tags<cr>
 
-" FZF {
-    nnoremap <leader>[ :<c-u>FZF<CR>
-    nnoremap <leader>] :<c-u>GFiles<CR>
-    nnoremap <leader>} :<c-u>FZF assets<CR>
-    nnoremap <leader>b :<c-u>Buffers<CR>
-    nnoremap <leader>n :<c-u>History<CR>
+""" Core plugin configuration (lua)
+lua << EOF
+require('treesitter-config')
+require('nvim-cmp-config')
+require('lspconfig-config')
+require('telescope-config')
+require('lualine-config')
+require('nvim-tree-config')
+require('diagnostics')
+require('hop-config')
 
-    " Open FZF for directory of current file.
-    nnoremap <leader>f :<c-u>FZF %:h<CR>
-
-    " [Buffers] Jump to the existing window if possible
-    let g:fzf_buffers_jump = 1
-
-    autocmd FileType php setlocal omnifunc=phpactor#Complete
-" }
-
-" { NERDTREE
-    map <C-e> :NERDTreeToggle<CR>
-    map <leader>r :NERDTreeFind<cr>
-" }
-
-" { NERDTREE-GIT
-    let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
-" }
-
-" PHPACTOR {
-    let g:phpactorPhpBin = 'php'
-    let g:phpactorBranch = 'master'
-    let g:phpactorOmniAutoClassImport = v:true
-    let g:phpactorInputListStrategy = 'phpactor#input#list#fzf'
-
-    " Include use statement
-    nmap <Leader>u :call phpactor#UseAdd()<CR>
-
-    " Invoke the context menu
-    nmap <Leader>mm :call phpactor#ContextMenu()<CR>
-
-    " Invoke the navigation menu
-    nmap <Leader>nn :call phpactor#Navigate()<CR>
-
-    " Goto definition of class or class member under the cursor
-    nmap <a-]> :call phpactor#GotoDefinition()<CR>
-    nmap <Leader>oh :call phpactor#GotoDefinitionHsplit()<CR>
-    nmap <Leader>ov :call phpactor#GotoDefinitionVsplit()<CR>
-    nmap <Leader>ot :call phpactor#GotoDefinitionTab()<CR>
-    " List find references
-    nmap <a-[> :call phpactor#FindReferences()<CR>
-
-    " Show brief information about the symbol under the cursor
-    nmap <Leader>K :call phpactor#Hover()<CR>
-
-    " Transform the classes in the current file
-    nmap <Leader>tt :call phpactor#Transform()<CR>
-
-    " Generate a new class (replacing the current file)
-    nmap <Leader>cc :call phpactor#ClassNew()<CR>
-
-    " Extract expression (normal mode)
-    nmap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
-
-    " Extract expression from selection
-    vmap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
-
-    " Extract method from selection
-    vmap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
-" }
-
-" { TAGBAR
-    nmap <leader>t :TagbarToggle<CR>
-" }
-
-" { GITGUTER
-    " You can jump between hunks with [c and ]c.
-    " You can preview, stage, and undo hunks with <leader>hp, <leader>hs, and <leader>hu respectively.
-" }
-
-" { STARTIFY
-
-    " " show NerdTree on startup
-    " autocmd VimEnter *
-    "         \   if !argc()
-    "         \ |   Startify
-    "         \ |   NERDTree
-    "         \ |   wincmd w
-    "         \ | endif
-
-    let g:startify_lists = [
-      \ { 'type': 'sessions',  'header': ['   Sessions']       },
-      \ { 'type': 'files',     'header': ['   MRU']            },
-      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-      \ { 'type': 'commands',  'header': ['   Commands']       },
-      \ ]
-    let g:startify_session_before_save = [
-      \ 'echo "Cleaning up before saving.."',
-      \ 'silent! NERDTreeTabsClose'
-      \ ]
-    let g:startify_bookmarks = [
-      \ '~/.config/qtile/config.py',
-      \ ]
-    let g:startify_session_persistence = 1
-    let g:startify_change_to_vcs_root = 1
-    let g:startify_fortune_use_unicode = 1
-    let g:startify_custom_header = 'startify#pad(startify#fortune#cowsay())'
-" }
-
-" LIGHTLINE {
-    set noshowmode    " MODE is shown in lightline
-    let g:lightline = {
-      \   'colorscheme': 'seoul256',
-      \   'active': {
-      \     'left': [ [ 'mode', 'paste' ],
-      \               [ 'readonly', 'filename', 'modified' ] ],
-      \     'right': [ [ 'lineinfo' ],
-      \                [ 'percent' ],
-      \                [ 'gitbranch' ],
-      \                [ 'fileencoding', 'filetype', 'charvaluehex' ],
-      \                [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ] ],
-      \   },
-      \   'component': {
-      \     'charvaluehex': '0x%B'
-      \   },
-      \ }
-    let g:lightline.component_expand = {
-      \  'linter_checking': 'lightline#ale#checking',
-      \  'linter_warnings': 'lightline#ale#warnings',
-      \  'linter_errors': 'lightline#ale#errors',
-      \  'linter_ok': 'lightline#ale#ok',
-      \  'gitbranch': 'fugitive#head'
-      \ }
-    let g:lightline.component_type = {
-      \     'linter_checking': 'left',
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \     'linter_ok': 'left',
-      \     'gitbranch': 'error',
-      \ }
-    let g:lightline.tab = {
-        \ 'active': [ 'tabnum', 'filename', 'modified' ],
-        \ 'inactive': [ 'tabnum', 'filename', 'modified' ] }
-" }
-
-" ALE {
-    let g:ale_php_phpcs_executable = '/home/arnas/src/neopay-pisp/bin/phpcs'
-    " let g:ale_php_phpcs_options = '--standard=/home/arnas/out/phutils/build/phpcs.xml'
-
-    let g:ale_php_cs_fixer_executable = '/home/arnas/.config/composer/vendor/bin/php-cs-fixer'
-    let g:ale_php_cs_fixer_options = '--config=/home/arnas/.php_cs'
-
-    let g:ale_php_phpstan_executable = './bin/phpstan'
-    " let g:ale_php_phpstan_level = '7'
-    " let g:ale_php_phpstan_configuration = './vendor/boozt/phutil/build/phpstan.neon'
-
-    let g:ale_linters = {
-    \   'php': ['php', 'phpcs', 'phpstan'],
-    \   'python': ['flake8'],
-    \   'go': ['gofmt'],
-    \   'javascript': ['eslint'],
-    \}
-    let g:ale_fixers = {
-    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \   'javascript': ['eslint'],
-    \   'php': ['phpcbf', 'php_cs_fixer'],
-    \   'python': ['isort'],
-    \}
-
-    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-    nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-    let g:ale_fix_on_save = 1
-    let g:ale_lint_on_save = 1
-    " let g:ale_lint_on_text_changed = 0
-" }
-
-" DEOPLETE {
-    let g:deoplete#enable_at_startup = 1
-" }
-
-" DOGE {
-    let g:doge_enable_mappings = 1
-" }
-
-" RAINBOW {
-    let g:rainbow_active = 1
-" }
-
-" ULTISNIPS {
-    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-    let g:UltiSnipsExpandTrigger="<tab>"
-    let g:UltiSnipsJumpForwardTrigger="<c-b>"
-    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" }
-
-"""""""""""""
-"  Tabular  "
-"""""""""""""
-
-vmap <silent><Leader><Leader>d :Tabularize /\$\w*<CR>
-
-"""""""""""""
-"  Abolish  "
-"""""""""""""
-
-" Want to turn fooBar into foo_bar? Press crs (coerce to snake_case). MixedCase (crm), camelCase (crc), snake_case (crs),
-" UPPER_CASE (cru), dash-case (cr-), dot.case (cr.), space case (cr<space>), and Title Case (crt) are all just 3 keystrokes away.
+require'hop'.setup()
+EOF

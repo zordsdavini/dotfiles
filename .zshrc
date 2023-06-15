@@ -68,7 +68,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sudo docker composer)
+plugins=(fzf git sudo docker composer golang npm colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -96,14 +96,19 @@ export DOCKER_HOST="unix:///var/run/docker.sock"
 
 # aliases
 alias rgrep="grep -r"
-alias b="~/src/infrastructure/Docker/boozt.sh"
 alias gs="git status"
 alias up="git checkout master && git pull"
 alias qtile_restart="qtile-cmd -o cmd -f restant"
 alias ww="watson"
 alias wws="watson stop"
 alias wwr="watson restart"
+alias wwb="watson start $(git symbolic-ref HEAD 2>/dev/null | cut -b 17-20)"
 alias newst="st >/dev/null 2>&1 & disown"
+
+alias stage="git branch -D stage && git checkout stage && git pull"
+
+YESTERDAY=$( date -d "yesterday 13:00 " '+%Y-%m-%d' )
+alias wwy="watson report --from $YESTERDAY --to $YESTERDAY -Gc"
 
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
@@ -170,12 +175,12 @@ fbr() {
 }
 
 # frb - rebase git branch
-frb() {
-  local branches branch
-  branches=$(git --no-pager branch -vv) &&
-  branch=$(echo "$branches" | fzf +m) &&
-  git rebase $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
-}
+# frb() {
+#   local branches branch
+#   branches=$(git --no-pager branch -vv) &&
+#   branch=$(echo "$branches" | fzf +m) &&
+#   git rebase $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+# }
 
 alias glNoGraph='git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr% C(auto)%an" "$@"'
 _gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
@@ -200,58 +205,62 @@ fshow() {
                 --bind "alt-c:execute:$_gitLogLineToHash | xclip"
 }
 
-# Select a docker container to start and attach to
-da() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
+# # Select a docker container to start and attach to
+# da() {
+#   local cid
+#   cid=$(docker ps -a | sed 1d | fzf -1 -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
-}
-# Select a running docker container to stop
-ds() {
-  local cid
-  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+#   [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
+# }
+# # Select a running docker container to stop
+# ds() {
+#   local cid
+#   cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker stop "$cid"
-}
-# Select a docker container to remove
-drm() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
+#   [ -n "$cid" ] && docker stop "$cid"
+# }
+# # Select a docker container to remove
+# drm() {
+#   local cid
+#   cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker rm "$cid"
-}
+#   [ -n "$cid" ] && docker rm "$cid"
+# }
 
 fman() {
     man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
 }
 
 
-_watson_completion() {
-    local -a completions
-    local -a completions_with_descriptions
-    local -a response
-    response=("${(@f)$( env COMP_WORDS="${words[*]}" \
-                        COMP_CWORD=$((CURRENT-1)) \
-                        _WATSON_COMPLETE="complete_zsh" \
-                        watson )}")
+# _watson_completion() {
+#     local -a completions
+#     local -a completions_with_descriptions
+#     local -a response
+#     response=("${(@f)$( env COMP_WORDS="${words[*]}" \
+#                         COMP_CWORD=$((CURRENT-1)) \
+#                         _WATSON_COMPLETE="complete_zsh" \
+#                         watson )}")
 
-    for key descr in ${(kv)response}; do
-      if [[ "$descr" == "_" ]]; then
-          completions+=("$key")
-      else
-          completions_with_descriptions+=("$key":"$descr")
-      fi
-    done
+#     for key descr in ${(kv)response}; do
+#       if [[ "$descr" == "_" ]]; then
+#           completions+=("$key")
+#       else
+#           completions_with_descriptions+=("$key":"$descr")
+#       fi
+#     done
 
-    if [ -n "$completions_with_descriptions" ]; then
-        _describe -V unsorted completions_with_descriptions -U -Q
-    fi
+#     if [ -n "$completions_with_descriptions" ]; then
+#         _describe -V unsorted completions_with_descriptions -U -Q
+#     fi
 
-    if [ -n "$completions" ]; then
-        compadd -U -V unsorted -Q -a completions
-    fi
-    compstate[insert]="automenu"
-}
+#     if [ -n "$completions" ]; then
+#         compadd -U -V unsorted -Q -a completions
+#     fi
+#     compstate[insert]="automenu"
+# }
 
-compdef _watson_completion watson;
+# compdef _watson_completion watson;
+
+cat ~/.cache/wal/sequences
+
+export PS1="%T$PS1"
