@@ -1,0 +1,13 @@
+#!/bin/bash
+
+STATE=`ps ax | grep "picom -b" | wc -l`
+if [ $STATE -eq 2 ]
+then
+    pkill -f "picom -b"
+    echo "Picom effects disabled."
+    notify-send -u critical 'Picom effects disabled' -t 2000
+else
+    picom -b
+    echo "Picom effects enabled."
+    notify-send -u critical 'Picom effects enabled' -t 2000
+fi

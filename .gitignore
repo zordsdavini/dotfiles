@@ -6,6 +6,7 @@
 !bin
 !bin/*
 !.config
+!.config/autorandr
 !.config/composer
 !.config/composer/composer.json
 !.config/dunst
